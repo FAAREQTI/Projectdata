@@ -5,13 +5,12 @@ from typing import List, Tuple
 import argparse
 
 
-
 # function to connect to database
 def connet_db(database: str) -> Tuple[str, str]:
     try:
         conn = psycopg2.connect(
             host="localhost",
-            database= database,
+            database=database,
             user="postgres",
             password="ARES"
         )
@@ -20,8 +19,9 @@ def connet_db(database: str) -> Tuple[str, str]:
         print("Error:", e)
     return conn, cur
 
-
 # function to create table
+
+
 def create_table(cur: str, col_type: str, name_of_table: str, conn: str):
     try:
         # drop the table if exists
@@ -33,8 +33,9 @@ def create_table(cur: str, col_type: str, name_of_table: str, conn: str):
     except Exception as e:
         print("Error:", e)
 
-
 # load csv
+
+
 def load_csv(filename: str) -> pd.DataFrame:
     try:
         df = pd.read_csv(filename)
@@ -43,6 +44,8 @@ def load_csv(filename: str) -> pd.DataFrame:
     return df
 
 # convert python to sql format
+
+
 def convert_types_to_sql_format(df: pd.DataFrame) -> Tuple[str, str]:
     try:
         types = []
@@ -61,5 +64,3 @@ def convert_types_to_sql_format(df: pd.DataFrame) -> Tuple[str, str]:
     except Exception as e:
         print("Error:", e)
     return col_type, values
-
-
