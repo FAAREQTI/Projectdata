@@ -27,4 +27,5 @@ for i,row in df.iterrows():
     conn.commit()
 
 print("successfully uploaded", cur.rowcount)
-
+cur.close()
+conn.close()
