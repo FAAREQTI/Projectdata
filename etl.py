@@ -16,12 +16,16 @@ df['gross_margin_percentage'] = df['gross_margin_percentage'].astype('float')
 df['gross_income'] = df['gross_income'].astype('float')
 df['rating'] = df['rating'].astype('float')
 
-df[['invoice_id', 'branch', 'city', 'customer_type',
-    'gender', 'product_line', 'unit_price']]
 
-n = len(df)
-n1 = n // 3
-n2 = 2 * n1
-table1 = df.iloc[:n1]
-table2 = df.iloc[n1:n2]
-table3 = df.iloc[n2:]
+# create table 1
+table1 = df[['invoice_id', 'branch', 'city', 'customer_type', 'gender', 'product_line', 'unit_price']]
+table1.to_csv('table1.csv', index=False)
+
+# create table 2
+table2 = df[['invoice_id', 'quantity', 'tax_5_percent', 'total', 'date', 'time', 'payment']]
+table2.to_csv('table2.csv', index=False)
+
+# create table 3
+table3 = df[['invoice_id', 'cogs', 'gross_margin_percentage', 'gross_income', 'rating']]
+table3.to_csv('table3.csv', index=False)
+
