@@ -6,6 +6,7 @@ df.dtypes
 # Convert date and time columns to datetime datatype
 df['date'] = pd.to_datetime(df['date'])
 # Convert numerical columns to appropriate datatypes
+df['invoice_id'] = df['invoice_id'].astype('str')
 df['unit_price'] = df['unit_price'].astype('float')
 df['quantity'] = df['quantity'].astype('int')
 df['tax_5_percent'] = df['tax_5_percent'].astype('float')
@@ -14,6 +15,12 @@ df['cogs'] = df['cogs'].astype('float')
 df['gross_margin_percentage'] = df['gross_margin_percentage'].astype('float')
 df['gross_income'] = df['gross_income'].astype('float')
 df['rating'] = df['rating'].astype('float')
+df['branch'] = df['branch'].astype('str')
+df['city'] = df['city'].astype('str')
+df['customer_type'] = df['customer_type'].astype('str')
+df['gender'] = df['gender'].astype('str')
+df['product_line'] = df['product_line'].astype('str')
+df['payment'] = df['payment'].astype('str')
 
 
 # create table 1
