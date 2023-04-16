@@ -28,3 +28,5 @@ for i,row in df.iterrows():
 
 print("successfully uploaded", cur.rowcount)
 
+cur.close()
+conn.close()
