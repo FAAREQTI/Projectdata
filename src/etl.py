@@ -7,11 +7,9 @@ df = load_csv(path)
 
 # Convert date and time columns to datetime datatype
 # define a lambda function to convert the date string to the desired format
-
-
-def date_converter(x): return datetime.strptime(x, '%m-%d-%Y').strftime('%Y-%m-%d') \
+def date_converter(x): 
+    return datetime.strptime(x, '%m-%d-%Y').strftime('%Y-%m-%d') \
     if '-' in x else datetime.strptime(x, '%m/%d/%Y').strftime('%Y-%m-%d')
-
 
 # apply the lambda function to the 'date' column of the DataFrame
 df['date'] = df['date'].apply(date_converter)
