@@ -1,29 +1,21 @@
 import pandas as pd
 from utils import load_csv
+from datetime import datetime
 
-path = 'supermarket_sales.csv'
+path = 'data/supermarket_sales.csv'
 df = load_csv(path)
-df.dtypes
 
 # Convert date and time columns to datetime datatype
-df['date'] = pd.to_datetime(df['date'])
-# Convert numerical columns to appropriate datatypes
-df['invoice_id'] = df['invoice_id'].astype('str')
-df['unit_price'] = df['unit_price'].astype('float')
-df['quantity'] = df['quantity'].astype('int')
-df['tax_5_percent'] = df['tax_5_percent'].astype('float')
-df['total'] = df['total'].astype('float')
-df['cogs'] = df['cogs'].astype('float')
-df['gross_margin_percentage'] = df['gross_margin_percentage'].astype('float')
-df['gross_income'] = df['gross_income'].astype('float')
-df['rating'] = df['rating'].astype('float')
-df['branch'] = df['branch'].astype('str')
-df['city'] = df['city'].astype('str')
-df['customer_type'] = df['customer_type'].astype('str')
-df['gender'] = df['gender'].astype('str')
-df['product_line'] = df['product_line'].astype('str')
-df['payment'] = df['payment'].astype('str')
+# define a lambda function to convert the date string to the desired format
 
+
+def date_converter(x): return datetime.strptime(x, '%m-%d-%Y').strftime('%Y-%m-%d') \
+    if '-' in x else datetime.strptime(x, '%m/%d/%Y').strftime('%Y-%m-%d')
+
+
+# apply the lambda function to the 'date' column of the DataFrame
+df['date'] = df['date'].apply(date_converter)
+df['date'] = pd.to_datetime(df['date'])
 
 # create table 1
 table1 = df[['invoice_id', 'branch', 'city',
