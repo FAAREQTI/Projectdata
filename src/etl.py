@@ -1,8 +1,10 @@
 import pandas as pd
+from utils import load_csv
 
-path = 'data/supermarket_sales.csv'
-df = pd.read_csv(path)
+path = 'supermarket_sales.csv'
+df = load_csv(path)
 df.dtypes
+
 # Convert date and time columns to datetime datatype
 df['date'] = pd.to_datetime(df['date'])
 # Convert numerical columns to appropriate datatypes
