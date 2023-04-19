@@ -2,7 +2,12 @@ import pandas as pd
 import psycopg2
 from typing import List, Tuple
 import argparse
+import os
+from pathlib import Path
+from dotenv import load_dotenv 
 
+env_path = Path('.env')
+load_dotenv(env_path)
 
 # function to connect to database
 def connet_db(database: str) -> Tuple[str, str]:
@@ -11,7 +16,7 @@ def connet_db(database: str) -> Tuple[str, str]:
             host="localhost",
             database=database,
             user="postgres",
-            password="ARES"
+            password= os.getenv("PASSWORD")
         )
         cur = conn.cursor()
     except Exception as e:
