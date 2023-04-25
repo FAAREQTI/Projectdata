@@ -8,12 +8,7 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-env_path = Path('.env')
-load_dotenv(env_path)
-
 # function to connect to database
-
-
 def connet_db(database: str) -> Tuple[str, str]:
     """Connects to a PostgreSQL database with the given database name
     Args:
@@ -21,6 +16,8 @@ def connet_db(database: str) -> Tuple[str, str]:
     Returns:
         Tuple[str, str]: tuple containing the connection and cursor objects.
     """
+    env_path = Path('.env')
+    load_dotenv(env_path)
     try:
         conn = psycopg2.connect(
             host="localhost",
@@ -33,9 +30,8 @@ def connet_db(database: str) -> Tuple[str, str]:
         print("Error:", e)
     return conn, cur
 
+
 # function to create table
-
-
 def create_table(cur: str, col_type: str, name_of_table: str, conn: str):
     """Creates a new table in a PostgreSQL database
     Args:
@@ -54,25 +50,23 @@ def create_table(cur: str, col_type: str, name_of_table: str, conn: str):
     except Exception as e:
         print("Error:", e)
 
+
 # load csv
-    """Loads a CSV file as a pandas DataFrame.
+def load_csv(filename: str) -> pd.DataFrame:
+        """Loads a CSV file as a pandas DataFrame.
      Args:
         filename: path to csv file
     Returns:
         df: the CSV file as a pandas DataFrame
     """
-
-
-def load_csv(filename: str) -> pd.DataFrame:
     try:
         df = pd.read_csv(filename)
     except Exception as e:
         print("Error:", e)
     return df
 
+
 # convert python to sql format
-
-
 def convert_types_to_sql_format(df: pd.DataFrame) -> Tuple[str, str]:
     """Converts pandas data types to SQL data types.
     Args:
@@ -152,3 +146,4 @@ def read_file_from_s3(key):
 
     # Return Pandas DataFrame
     return df
+
