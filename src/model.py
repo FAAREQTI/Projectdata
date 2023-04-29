@@ -1,6 +1,6 @@
 import pandas as pd
 from prophet import Prophet
-
+from src.utils import read_file_from_s3 
 
 def prophet_forecast(df):
     city_list = df['city'].unique()
@@ -23,4 +23,9 @@ def prophet_forecast(df):
     return forecast
 
 
-prophet_forecast(df_filter)
+# add to py script
+df = read_file_from_s3("supermarket.csv")
+df.head()
+
+# execute your function and assign it to a variable as function has return statement
+output = prophet_forecast(df)

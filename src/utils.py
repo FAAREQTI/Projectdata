@@ -53,7 +53,7 @@ def create_table(cur: str, col_type: str, name_of_table: str, conn: str):
 
 # load csv
 def load_csv(filename: str) -> pd.DataFrame:
-        """Loads a CSV file as a pandas DataFrame.
+    """Loads a CSV file as a pandas DataFrame.
      Args:
         filename: path to csv file
     Returns:
