@@ -7,6 +7,9 @@ import argparse
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+from googleapiclient.discovery import build
+from oauth2client.service_account import ServiceAccountCredentials
+import gspread
 
 # function to connect to database
 def connet_db(database: str) -> Tuple[str, str]:
@@ -53,7 +56,7 @@ def create_table(cur: str, col_type: str, name_of_table: str, conn: str):
 
 # load csv
 def load_csv(filename: str) -> pd.DataFrame:
-        """Loads a CSV file as a pandas DataFrame.
+    """Loads a CSV file as a pandas DataFrame.
      Args:
         filename: path to csv file
     Returns:
@@ -117,19 +120,37 @@ def auth_aws(env_path):
     return bucket, s3
 
 
-def upload_file(filename, key):
-    """Uploads a file to S3 using the auth_aws() function and returns file name and key"""
-    # Authenticate AWS and get bucket and s3 objects
-    bucket, s3 = auth_aws(Path('.env'))
+def upload_to_s3(df: pd.DataFrame, filename: str) -> bool:
+    """
+    Uploads a pandas DataFrame to an S3 bucket.
+    Parameters:
+    -----------
+    df : pandas.DataFrame
+        The pandas DataFrame to upload.
+    filename : str
+        The name to give to the uploaded file. This should not include the file extension.
+    Returns:
+    --------
+    bool
+        True if the DataFrame was successfully uploaded, False otherwise.
+    """
+    # Authenticate with AWS
+    bucket_name, s3 = auth_aws(".env")
 
-    # Upload file to S3
-    s3.upload_file(filename, bucket, Key=key)
-
-    # Print success message
-    print("Successfully uploaded")
-
-    # Return file name and key
-    return filename, key
+    # Upload the file
+    try:
+        csv_buffer = StringIO()
+        df.to_csv(csv_buffer, index=False)
+        response = s3.put_object(
+            ACL = 'private',
+            Body=csv_buffer.getvalue(),
+            Bucket = bucket_name,
+            Key=filename + '.csv'
+        )
+    except Exception as e:
+        print(e)
+        return False
+    return True
 
 
 def read_file_from_s3(key):
@@ -147,3 +168,34 @@ def read_file_from_s3(key):
     # Return Pandas DataFrame
     return df
 
+def upload_to_google_sheet(spreadsheet_id: str, df: pd.DataFrame, worksheet_name: str) -> bool:
+    
+    # Authenticate with Google Sheets API
+    SCOPES = [
+        "https://spreadsheets.google.com/feeds",
+        'https://www.googleapis.com/auth/spreadsheets',
+        "https://www.googleapis.com/auth/drive.file",
+        "https://www.googleapis.com/auth/drive"
+    ]
+    
+    credentials = ServiceAccountCredentials.from_json_keyfile_name("GCP.json", SCOPES)
+    gc = gspread.authorize(credentials)
+
+    # Open the worksheet
+    try:
+        worksheet = gc.open_by_key(spreadsheet_id).worksheet(worksheet_name)
+    except gspread.exceptions.WorksheetNotFound:
+        worksheet = gc.open_by_key(spreadsheet_id).add_worksheet(worksheet_name, 1, 1)
+
+    # Clear the existing content in the worksheet
+    worksheet.clear()
+
+    # Convert Timestamp columns to string format
+    df = df.astype(str)
+
+    # Write the DataFrame to the worksheet
+    cell_list = worksheet.update([df.columns.values.tolist()] + df.values.tolist())
+    if cell_list:
+        print("success")
+    else:
+        print("failed")

@@ -1,0 +1,16 @@
+mysql-connector-python
+psycopg2
+pandas
+python-dotenv
+pathlib
+PyYAML
+pylint
+black
+pytest
+boto3
+fsspec
+s3fs
+gspread
+oauth2client
+google-api-python-client
+neuralprophet 

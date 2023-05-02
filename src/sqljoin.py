@@ -1,5 +1,5 @@
 import pandas as pd
-from src.utils import load_csv, connet_db, create_table, convert_types_to_sql_format
+from utils import load_csv, connet_db, create_table, convert_types_to_sql_format, upload_to_s3
 
 
 # function to read and execute code in python:
@@ -18,8 +18,9 @@ def process() -> pd.DataFrame:
     database = "postgres"
     script_path = "src/JOIN.sql"
     df = run_sql_script(database, script_path)
+    upload_to_s3(df,"supermarket")
     return df
 
 
 result = process()
-print(result)
+
