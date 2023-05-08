@@ -1,36 +1,57 @@
 import pandas as pd
 from neuralprophet import NeuralProphet
-from utils import read_file_from_s3, upload_to_google_sheet 
+from src.utils import read_file_from_s3, upload_to_google_sheet 
+import statsmodels.api as sm
 
-def prophet_forecast(df):
-    city_list = df['city'].unique()
-    product_list = df['product_line'].unique()
-    results = []
-    for city in city_list:
-        for product_line in product_list:
-            df_filter = df[(df['city'] == city) & (
-                df['product_line'] == product_line)]
-            df_filter = df_filter[['date', 'quantity']].rename(
-                columns={'date': 'ds', 'quantity': 'y'})
-            model = NeuralProphet()
-            df_filter=df_filter.drop_duplicates(["ds"], keep="first")
-            model.fit(df_filter, freq="D")
-            future_dates = model.make_future_dataframe(df_filter, n_historic_predictions=True, periods=60)
-            forecast = model.predict(future_dates)
+def forecasting(df):
+
+    # Get unique cities and product lines from the data
+    cities = df['city'].unique()
+    product_lines = df['product_line'].unique()
+    
+    # Initialize an empty list to store the forecasts
+    forecasts = []
+    
+    # Loop through each city and product line to generate forecasts
+    for city in cities:
+        for product_line in product_lines:
+            # Filter the DataFrame based on the city and product line
+            filter = df[(df['city'] == city) & (df['product_line'] == product_line)]
+            
+            # Rename the 'date' and 'quantity' columns to 'ds' and 'y', respectively
+            filter = filter[['date', 'quantity']].rename(columns={'date': 'ds', 'quantity': 'y'})
+            
+            # Create a new ARIMA model object
+            model = sm.tsa.ARIMA(filter['y'], order=(1, 1, 1))
+
+            # Fit the model to the data
+            model_fit = model.fit()
+
+            # Create a new DataFrame for the future dates
+            future_dates = pd.date_range(filter['ds'].iloc[-1], periods=60, freq='D')
+
+            # Generate predictions for the future dates
+            forecast = model_fit.predict(start=len(filter), end=len(filter)+59, typ='levels', dynamic=False)
+            forecast = pd.DataFrame({'ds': future_dates, 'yhat': forecast})
+
+            # Add the city and product line as columns to the forecast DataFrame
             forecast['city'] = city
             forecast['product_line'] = product_line
-            results.append(forecast[["ds", "yhat1", "city", "product_line"]])
-    forecast = pd.concat(results, ignore_index=True)
-    return forecast
 
+            # Append the forecast to the list of forecasts
+            forecasts.append(forecast[['city', 'product_line', 'ds', 'yhat']])
 
-# add to py script
-df = read_file_from_s3("supermarket.csv")
+    # Concatenate all of the forecasts into a single DataFrame
+    forecasts_df = pd.concat(forecasts, ignore_index=True)
+    
+    return forecasts_df
 
-# execute your function and assign it to a variable as function has return statement
-output = prophet_forecast(df)
+def process():
+    # get data from s3
+    df = read_file_from_s3("cleaned_supermarket.csv")
+    # Generate sales forecasts for all combinations of cities and product lines
+    predictions = forecasting(df)
+    print("Model ran successfully! Uploading to gsheet!")
+    return predictions
 
-spreadsheet_id = "1xjPE5wUM7dd5JuZaZXoEIKMgeOJpNcZ5i_uw7EXwQIk"
-worksheet_name = "supermarket"
-
-upload_to_google_sheet(spreadsheet_id, output, worksheet_name)    
+  

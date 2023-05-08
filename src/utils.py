@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 from googleapiclient.discovery import build
 from oauth2client.service_account import ServiceAccountCredentials
 import gspread
+import importlib
 
 # function to connect to database
 def connet_db(database: str) -> Tuple[str, str]:
@@ -199,3 +200,14 @@ def upload_to_google_sheet(spreadsheet_id: str, df: pd.DataFrame, worksheet_name
         print("success")
     else:
         print("failed")
+        
+
+def process_task(task: str) -> dict:
+    """Import task file to process the data from src/tools folder
+    Args:
+        task (str): name of the task to process
+    Returns:
+        dict: processed_data
+    """
+    lib = importlib.import_module(f"src.{task}")
+    return lib.process()
