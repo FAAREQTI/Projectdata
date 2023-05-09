@@ -1,5 +1,5 @@
 import pandas as pd
-from src.utils import load_csv
+from utils import load_csv
 from datetime import datetime
 
 path = 'data/supermarket_sales.csv'
