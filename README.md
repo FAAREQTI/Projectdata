@@ -19,5 +19,7 @@ To use this project, follow these steps:
 
 4- prepare data and run the main script: python main.py
 
-## Created and contributed by
+## Created and contributed by :technologist:
 
+[Fatima-ezzahra Areqti](https://github.com/FAAREQTI)
+[Mitulkumar Patel (D2p)](https://github.com/mitulds)
