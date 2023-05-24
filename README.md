@@ -21,3 +21,5 @@ To use this project, follow these steps:
 
 ## Created and contributed by
 
+:woman_technologist:  [Fatima-ezzahra Areqti](https://github.com/FAAREQTI)
+:man_technologist:  [Mitulkumar patel](https://github.com/mitulds)
