@@ -7,6 +7,8 @@ Welcome to the end-to-end project developed in collaboration with d2p company. T
 
 In this hypothetical project, we collaborate with a supermarket firm seeking to forecast sales across three cities over a specified time frame. Our primary focus lies in the realm of data engineering, where we extract, transform, and load relevant datasets for analysis. Additionally, we employ data science techniques to build accurate prediction models. Finally, we culminate the project by presenting a comprehensive dashboard that provides a concise summary of the results and insights gained from the analysis.
 
+![alt text](Screenshot 2023-05-28 at 16.37.01.png)
+
 ## Installation and usage
 
 To use this project, follow these steps:
