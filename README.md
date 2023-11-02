@@ -1,7 +1,7 @@
 
 # Data science project End2end
 
-Welcome to the end-to-end project developed in collaboration with d2p company. This comprehensive data science endeavor is centered around the prediction of quantities for a supermarket business. Through this project, we aim to delve into various aspects of data engineering, data analysis, and forecasting, fostering a deeper understanding of these domains while delivering valuable insights for supermarket operations. Join us on this journey as we explore the intricate world of data-driven decision-making in the retail industry.
+Welcome to the end-to-end project. This comprehensive data science endeavor is centered around the prediction of quantities for a supermarket business. Through this project, we aim to delve into various aspects of data engineering, data analysis, and forecasting, fostering a deeper understanding of these domains while delivering valuable insights for supermarket operations. Join us on this journey as we explore the intricate world of data-driven decision-making in the retail industry.
 
 ## Project description 
 
