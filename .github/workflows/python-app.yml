@@ -33,7 +33,7 @@ jobs:
         
     - name: Lint with flake8
       run: |
-        flake8 test/test_model2.py --count --exit-zero
+        flake8 test/test_model.py --count --exit-zero
         
     - name: Test with pytest
       run: |
