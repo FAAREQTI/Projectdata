@@ -27,67 +27,6 @@ def data_table3():
     table3 = load_csv('data/table3.csv')
     return table3
 
-@pytest.fixture
-def connet3():
-    conn = psycopg2.connect(
-        host="localhost",
-        database="test_db",
-        user="fatima",
-        password="fafafa99"
-    )
-    cur = conn.cursor()
-    yield conn, cur  
-    cur.close()
-    conn.close()
-
-# Fixture to connect to the database
-@pytest.fixture
-def admin_conn():
-    conn = psycopg2.connect(
-        host="localhost",
-        database="postgres",  
-        user="fatima",
-        password="fafafa99"
-    )
-    cur = conn.cursor()
-    yield conn, cur
-    cur.close()
-    conn.close()
-
-
-@pytest.fixture
-def connet_dbg2():
-    conn = None
-    cur = None
-    try:
-        conn = psycopg2.connect(
-            host="localhost",
-            database='test_db',
-            user="fatima",
-            password="fafafa99"
-        )
-        cur = conn.cursor()
-    except Exception as e:
-        print("Error:", e)
-    return conn, cur
-
-
-@pytest.fixture
-def connet_dbb2():
-    conn = None
-    cur = None
-    try:
-        conn = psycopg2.connect(
-            host="localhost",
-            database='test_db',
-            user="faaaatoriima",
-            password="fafafadhjd99"
-        )
-        cur = conn.cursor()
-    except Exception as e:
-        print("Error:", e)
-    return conn, cur
-
 
 @pytest.fixture(scope="session")
 def df2():
