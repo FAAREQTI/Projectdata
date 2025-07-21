@@ -3,6 +3,7 @@ from datetime import datetime
 import pytest
 from src.utils import load_csv
     
+###This pytest functions check for date_converter functions and the existence of correct columns in extracted tables 
 
 def date_converter(x): 
     return datetime.strptime(x, '%m-%d-%Y').strftime('%Y-%m-%d') \
@@ -32,7 +33,6 @@ def test_customer_creation(data_table1):
     assert list(data_table1.columns) == expected_columns1
     
 
-
 ####
 @pytest.mark.data
 def test_sales_creation(data_table2):
@@ -53,11 +53,4 @@ def test_kpi_creation(data_table3):
     ]
     assert list(data_table3.columns) == expected_columns3
 
-@pytest.mark.parametrize("num , expected_output", [(1,6), (2,7), (3,8)])
-def test_add(num, expected_output):
-    assert num + 5 == expected_output
 
-
-#skip
-#custom
-#xfail

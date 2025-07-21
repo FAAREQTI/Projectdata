@@ -211,3 +211,18 @@ def process_task(task: str) -> dict:
     """
     lib = importlib.import_module(f"src.{task}")
     return lib.process()
+
+def connet_dbg():
+    conn = None
+    cur = None
+    try:
+        conn = psycopg2.connect(
+            host="localhost",
+            database='test_db',
+            user="fatima",
+            password="fafafa99"
+        )
+        cur = conn.cursor()
+    except Exception as e:
+        print("Error:", e)
+    return conn, cur

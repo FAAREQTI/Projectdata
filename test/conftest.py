@@ -6,6 +6,7 @@ import psycopg2
 warnings.filterwarnings("ignore")
 
 
+
 @pytest.fixture
 def data_df():
     df = load_csv('data/supermarket_sales.csv')
@@ -88,9 +89,6 @@ def connet_dbb2():
     return conn, cur
 
 
-import pytest
-import pandas as pd
-
 @pytest.fixture(scope="session")
 def df2():
     """Fixture that returns a test dataframe"""
@@ -109,3 +107,18 @@ def df():
     path = 'data/supermarket_sales.csv'
     return load_csv(path)
 
+@pytest.fixture
+def connet_dbg():
+    conn = None
+    cur = None
+    try:
+        conn = psycopg2.connect(
+            host="localhost",
+            database='test_db',
+            user="fatima",
+            password="fafafa99"
+        )
+        cur = conn.cursor()
+    except Exception as e:
+        print("Error:", e)
+    return conn, cur

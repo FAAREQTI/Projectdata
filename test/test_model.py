@@ -4,6 +4,7 @@ from datetime import timedelta
 import pytest 
 import pandas as pd
 
+
 # Valid predictions output
 valid_predictions_df = pd.DataFrame({
     "city": ["Toronto", "Ottawa"],
@@ -25,10 +26,13 @@ def process_valid():
 def process_empty():
     return empty_predictions_df
 
+##Tests to validate forecasting output
+
 def test_forecasting_predictions_not_empty():
     predictions = process_valid()
     assert "predictions" in predictions.columns, "'predictions' column is missing!"
     assert predictions["predictions"].notna().any(), "All predictions are empty!"
+
 
 @pytest.mark.xfail(reason="Function not yet handling empty predictions properly")
 def test_forecasting_predictions_empty():
